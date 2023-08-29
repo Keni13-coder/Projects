@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block link %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('acc.static', filename='css/account.css')}}">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" defer></script>
+    <script src="https://unpkg.com/imask" defer></script>
+
+{%endblock%}
+{% block body %}
+
+<div class="conatainer justify-content-md-center">
+    <div class="mydiv">
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Изображение</th>
+            <th scope="col">Артикул товара</th>
+            <th scope="col">Цена товара</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Категория</th>
+          </tr>
+        </thead>
+        <tbody>
+        {%for user_product, user, product in data %}
+        {% if not product.buy%}
+          <tr>
+            <th scope="row">
+                <div class="img-circle text-center mb-1">
+                <img class="border border-light border-opacity-0 border-1" src="{{url_for('static', filename=product.img_file)}}" alt="{{product.title}}" title="{{product.title}}">
+            </div>
+            </th>
+            <td>{{product.id}}</td>
+            <td>{{product.prise}}</td>
+            <td>{{product.title}}</td>
+            <td>{{product.category}}</td>
+            <form action="" method="post">
+              {{basket.csrf_token}}
+            <td>
+                <div class="form-group">
+                <!-- <button type="submit" class="btn-close" aria-label="Close"></button> -->
+                <!-- изменить кнопку тк она уже участвует в индексе -->
+                {{basket.basket_submit(class="btn-close", value=' ')}}
+                {{basket.basket(type="hidden",value=user_product.product_id)}}
+                
+                </div>
+            </td>
+            </form>
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="position-relative">
+        <div class="position-absolute top-0 start-0 fs-1" >Общая стоимость</div>
+        <div class="position-absolute top-50 end-50 fs-1">
+        {{sum}}
+      </div>
+      <form method="post" action="">
+        {{place.csrf_token}}
+      <div class="position-absolute top-50 end-0 fs-4">
+
+        {{place.place_submit}}
+
+        {{place.place(type="hidden",value=sum)}}
+      </div>
+    </form>
+
+    </div>
+
+    </div>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+{%endblock body %}

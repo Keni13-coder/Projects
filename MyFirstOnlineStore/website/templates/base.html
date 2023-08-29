@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/mycss.css')}}">
+  
+    <script src="{{url_for('static', filename='js/api_test.js')}}"></script>
+    <script src="{{url_for('static', filename='js/main.min.js')}}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" defer></script>
+
+
+    {% block link %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/create_product.css')}}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
+    
+
+    <script src="https://unpkg.com/imask" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" defer></script>
+    <script src="{{url_for('static', filename='js/filter.js')}}" defer></script>
+    {%endblock%}
+
+    {% if title %}
+    <title> Интернет магазин - {{title}}</title>
+    {% else %}
+    <title>Интернет магазин</title>
+    {% endif %}
+</head>
+<body>
+
+  <div class="container overflow-hidden gy-10">
+    {% block header %}
+    <header class="p-3 text-bg-dark " id="headers13">
+        <div class="container ">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start" >
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="{{url_for('views.index')}}" class="nav-link px-2 text-secondary" _msttexthash="334776" _msthash="28">Магазин</a></li>
+              <li><a id="feature" class="nav-link px-2 text-white" _msttexthash="984971" _msthash="29">|</a></li>
+              <li class="list">
+                <div class="btn-group dropend ">
+                {% if request[-1] == url_for('views.index') %}
+                <button type="button" class="btn btn-blue text-white" >
+                  <span data-id="all" class="list__item">Каталог</span>
+                </button>
+                <button type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" id="btn_arrow">
+                  <span class="visually-hidden">Toggle Dropright</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end " id='ul_li'>
+                  {% for el in filter_category %}
+                  <li ><a data-id={{el.filter_category}} class="dropdown-item list__item" id="category" >{{el.category}}</a></li>
+                  {% endfor %}
+                </ul>
+                {% else %}
+                <a class="btn btn-blue text-white" href="{{url_for('views.index')}}"><span>Каталог</span></a>
+                {% endif %}
+              </div>
+            </li>
+            </ul>
+    
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search" class="form-control form-control-dark text-bg-dark" placeholder="Искать..." aria-label="Искать" _mstplaceholder="99723" _msthash="33" _mstaria-label="74607">
+            </form>
+            <div class="text-end">
+    
+    {% if current_user.is_authenticated %}
+    <div class="dropdown text-end">
+      <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="{{url_for('static', filename=current_user.image_file)}}" alt="{{current_user.username}}" title="{{current_user.username}}" width="32" height="32" class="rounded-circle" _mstalt="33306" _msthash="42">
+      </a>
+      <ul class="dropdown-menu text-small" _mstvisible="0">
+        {% if current_user.username == 'Admin13' %}
+        <li _mstvisible="1"><a class="dropdown-item" href="{{url_for('views.create')}}" _msttexthash="1893021" _msthash="43" _mstvisible="2">Добавить товар</a></li>
+        {% endif %}
+        <li _mstvisible="1" ><a class="dropdown-item" href="{{url_for('acc.shopping_basket')}}" _msttexthash="1393704" _msthash="44" _mstvisible="2">Корзина</a></li>
+        <li _mstvisible="1"><a class="dropdown-item" href="{{url_for('acc.like_user')}}" _msttexthash="1393704" _msthash="44" _mstvisible="2">Понравилось</a></li>
+        <li _mstvisible="1"><a class="dropdown-item" href="{{url_for('acc.purchase_log')}}" _msttexthash="1393704" _msthash="44" _mstvisible="2">История</a></li>
+        <li _mstvisible="1"><a class="dropdown-item" href="{{url_for('acc.account')}}" _msttexthash="987467" _msthash="45" _mstvisible="2">Профиль</a></li>
+        <li _mstvisible="1"><hr class="dropdown-divider" _mstvisible="2"></li>
+        <li _mstvisible="1"><a class="dropdown-item" href="{{url_for('auth.logout')}}" _msttexthash="3268447" _msthash="46" _mstvisible="2">Выйти из системы</a></li>
+      </ul>
+    </div>
+    {% else %}
+    <a href="{{url_for('auth.login')}}" class="btn btn-outline-light me-2" _msttexthash="629915" _msthash="34">Логин / Регистрация</a>
+    {% endif %}
+    {%endblock%}
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      {%block body%}
+      {%endblock body%}
+
+    </div>
+    
+</body>
+</html>

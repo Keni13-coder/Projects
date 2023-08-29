@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+
+{% block link %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
+<link rel="stylesheet" href="{{url_for('acc.static', filename='css/account.css')}}">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" defer></script>
+<script src="https://unpkg.com/imask" defer></script>
+
+{%endblock%}
+{% block body %}
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% if likes %}
+  {% for user_el, el in likes %}
+  <!-- убрал условия not basket -->
+  {% if user_el.like and not el.basket%}
+  <div class="col box {{el.filter_category}}">
+    <div class="card border-warning mb-3 h-100">
+      <div class="card-header">{{el.category}}</div>
+      <img src="{{url_for('static',filename=el.img_file)}}" width="80" height="300" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{el.title}}</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+          content. This content is a little bit longer.</p><br>
+        <div class="btn-toolbar justify-content-between">
+          {% if current_user.is_authenticated %}
+
+
+          <div class="d-flex flex-row bd-highlight mb-2">
+            <form action="" method="post" class="p-2">
+              {{like.like(type="hidden",value=el.id)}}
+
+              {{like.like_submit(class="btn-close", value=' ')}}
+
+            </form>
+            <!-- отсавим на подумать нужно ли удалять -->
+            {% if not el.basket %}
+            <form action="" , method="post" class="p-2">
+
+              {{form_basket.basket(type="hidden",value=el.id)}}
+
+
+              {{form_basket.basket_submit(class="btn mybtn btn-outline-costum")}}
+              {% else %}
+
+              <button type="button" class="btn btn-success" role="button" data-bs-toggle="button" disabled>Уже в
+                корзине</button>
+              {% endif %}
+          </div>
+          </p>
+          </form>
+          {% endif %}
+          <div class="card-text">
+            <small class="price" id="price">{{el.prise}} руб.</small>
+            {% if el.discount %}
+            <span class="d-block text-danger">скидка {{el.discount}}%</span>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% endfor%}
+</div>
+
+
+
+{% else %}
+
+<div class="container-xl">
+  <h1 class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.
+    This content is a little bit longer.</h1><br>
+</div>
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+{%endblock body %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %} 
+
+{% block body %}
+
+
+    <div class="myblock">
+    <form method="post" class="col-12" enctype="multipart/form-data">
+        {{form.csrf_token }}
+        <div class="position-absolute top-50 start-50 translate-middle w-50 p-3 p-2 mygroup">
+            <legend class="legend"> {{legend}} </legend>
+            <div class="form-group p-2 ">
+            <label for="title" class="form-label">Наименование товара</label>
+            {{form.title(class="form-control ")}}<!--placeholder="Введите название товара" -->
+            </div>
+            <div class="form-group p-2 ">
+                <label for="title" class="form-label">Категория товара</label>
+                {{form.category(class="form-control ")}}<!-- placeholder="Введите название категории товара" -->
+            </div>
+            <div class="form-group p-2 ">
+                <label for="prise" class="form-label">Установка скидку товара в %</label>
+                {{form.discount(class="form-control ")}}<!--placeholder="Введите скидку товара от 0 до 100" -->
+            </div>
+            <div class="form-group p-2 ">
+            <label for="prise" class="form-label">Установка ценны товара</label> <!-- указываем наши поля бд -->
+            {{form.price(class="form-control ")}}<!--placeholder="Введите цену" -->
+            <!-- отправляем на сервер -->
+            </div>
+            <div class="form-group p-2 image-input">
+            <label for="formFile" class="form-label ">Загрузка Изображени</label>
+            {{form.image(class="form-label ",accept="image/jpeg, image/jpg")}}
+            </div> 
+            
+            <!-- <div class="image-input">
+            <input accept="image/jpeg, image/jpg" id="image" name="image" type="file">
+                <img>
+                </div> -->
+            <div class="form-group">
+            {{form.submit(class="btn btn-success p-2 mt-3")}}
+            </div>
+        </div>
+    </form>
+    </div>
+{%endblock%}

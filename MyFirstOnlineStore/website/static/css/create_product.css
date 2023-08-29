@@ -1,0 +1,14 @@
+:root{
+	--index: calc(1vw + 1vh);
+}
+
+.myblock {
+    height: 100vh;
+    background-color: #fff;
+}
+.mygroup {
+    background: linear-gradient(#2196f3,#e91e63);
+}
+.form-control {
+    cursor: pointer;
+}

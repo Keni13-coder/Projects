@@ -1,0 +1,125 @@
+#headers13 {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+body {
+    background: linear-gradient(#2196f3,#e91e63);
+    background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment:fixed;
+    z-index: 1;
+}
+
+.price {
+    font-size: 35px;
+}
+
+
+#btn_arrow {
+    background: linear-gradient(#2196f3,#e91e63);
+    border: 1px solid gold;
+}
+#btn_arrow:hover {
+    background: linear-gradient(#e91e63,#2196f3);
+}
+.dropdown-item:hover {
+    color: #fff;
+    background-color: black;
+}
+    
+.dropdown-item.active, .dropdown-item:active {
+    background: linear-gradient(#e91e63,#2196f3);
+}
+/* #ul_li {
+    background: black;
+    background-repeat: no-repeat;
+	background-size: cover;
+    border: 3px solid gold;
+} */
+.hide {
+    opacity: 1;
+    animation-name: a1;
+    animation-duration: 2s;
+    animation-fill-mode: forwards ;
+    display: inline-block;
+}
+
+@keyframes a1 {
+    to {
+        opacity: 0;
+        min-height: 0;
+        min-width: 0;
+        padding: 0;
+        margin: 0;
+        border: 0;
+
+    }
+}
+#category:hover {
+    cursor: pointer;
+}
+
+
+
+svg {
+    position: relative;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-30%);
+    pointer-events: none;
+    transition: .5s;
+}
+
+
+
+/* #buy {
+    border: 2px solid rgb(255, 217, 4);
+} */
+.mybtn{
+    position: relative;
+    /* border-radius:30px; */
+    text-transform: uppercase;
+    transform: scale(1.1,1.1);
+    transition:all 0.3s ease-out 0s;
+   }
+
+.mybtn:hover{
+    transform: scale(1,1);
+}
+
+.mybtn:before {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left:0px;
+    width:100%;
+    height: 10px;
+    filter: blur(20px);
+    border-radius: 30px;
+    display: inline-block;
+    z-index: -1;
+    transition: all 0.3s ease-out 0s;
+}
+
+.mybtn:hover:before{
+    bottom:0;
+    filter: blur(10px);
+}
+
+/* .mybtn.orange{
+    background: linear-gradient(to left, #fe8c00 , #f83600);
+   }
+
+.mybtn.orange:before{
+    background: linear-gradient(to right,#fe8c00,#f83600);
+   } */
+
+.mydiv {
+    height: 100vh;
+}
+
+/* .sum {
+    position: relative;
+    left: 200px;
+} */

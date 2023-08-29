@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block link%}
+
+  <link href="{{url_for('auth.static', filename='css/sing-in.css')}}" rel="stylesheet">
+  
+  <script src="{{url_for('auth.static', filename='js/sing_up.js')}}" defer></script>
+
+{%endblock link %}
+</head>
+
+<body>
+{% block header %}
+{%endblock%}
+{% block body %}
+  <div class='home'>
+    <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+      <img class="" src="{{url_for('static', filename='image/icon/home.png')}}" aria-label="Bootstrap">
+    </a>
+  </div>
+
+
+
+<div class="wrapper">
+  <div class="form-wrapper sing-up">
+    <!-- регистрация -->
+    <form method="POST" action="">
+      {{ singUp_form.csrf_token }}
+
+      <legend class="legend"> {{singup_legend}} </legend>
+      <div class="input-group">
+
+        {{singUp_form.sing_username(class='form-post-title')}}
+        <label for="Username">Username</label>
+      </div>
+
+      <div class="input-group">
+
+        {{singUp_form.sing_email(class='form-post-title', )}}
+        <label for="email">Email</label>
+      </div>
+
+      <div class="input-group">
+        {{singUp_form.sing_password(class='form-post-title',)}}
+        <label for="password">Password</label>
+      </div>
+
+      <div class="input-group">
+        {{singUp_form.sing_config_password(class='form-post-title' )}}
+        <label for="">Config Password</label>
+      </div>
+      <div class="form-group">
+      {{singUp_form.sing_submit(class='btn')}}
+      </div>
+      <div class="sing-link">
+        <p>Already have an account? <a class="singIn-link">Sing In</a></p>
+      </div>
+    </form>
+  </div>
+
+  <!-- войти -->
+  <div class="form-wrapper sing-in">
+    <form method="POST" action="">
+      {{ login_form.csrf_token }}
+
+      <legend class="legend"> {{login_legend}} </legend>
+      <div class="input-group">
+        {{login_form.username(class='form-post-title')}}
+        <label for="Username">Username</label>
+      </div>
+
+      <div class="input-group">
+        {{login_form.password(class='form-post-title')}}
+        <label for="password">Password</label>
+      </div>
+
+      <div class="form-check">
+        {{login_form.remember(class='form-check-input')}}
+        {{login_form.remember.label(class='form-check-label')}}
+      </div>
+      <div class="form-group">
+        {{login_form.submit(class='btn')}}
+      </div>
+      <div class="sing-link">
+        <p>Don't have an account? <a class="singUp-link">Sing Up</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+{%endblock%}
+</body>

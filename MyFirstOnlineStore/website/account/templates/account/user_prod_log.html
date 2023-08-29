@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('acc.static', filename='css/account.css')}}">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" defer></script>
+    <script src="https://unpkg.com/imask" defer></script>
+
+    {%endblock%}
+    {% block body %}
+
+
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+    {% for _, el in log %}
+
+  <div class="col box {{el.filter_category}}">
+    <div class="card border-warning mb-3 h-100">
+      <div class="card-header">{{el.category}}</div>
+      <img src="{{url_for('static',filename=el.img_file)}}" width="80" height="300" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">{{el.title}}</h5>
+        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+          content. This content is a little bit longer.</p><br>
+          <div class="card-text">
+            <div class="btn-toolbar justify-content-between">
+            <small class="price" id="price">{{el.prise}} руб.</small>
+            {% if el.discount %}
+            <span class="d-block text-danger">скидка {{el.discount}}%</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div>
+{%endblock body%}

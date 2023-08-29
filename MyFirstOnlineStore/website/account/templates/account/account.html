@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+
+
+{% block link %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('acc.static', filename='css/account.css')}}">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" defer></script>
+    <script src="https://unpkg.com/imask" defer></script>
+    <script src="{{url_for('acc.static', filename='js/phone.js')}}" defer></script>
+    {%endblock%}
+
+
+{% block body %}
+
+{% if current_user.is_authenticated %}
+
+<section class="py-5 my-5">
+    <div class="container">
+        <h1 class="mb-5">Профиль</h1>
+        <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+            <div class="profile-tab-nav border-right">
+                <div class="p-4">
+                    <div class="img-circle text-center mb-3">
+                        <img src="{{url_for('static', filename=current_user.image_file)}}" alt="{{current_user.username}}" title="{{current_user.username}}">
+                    </div>
+                    <h4 class="text-center"> {{ current_user.username }}</h4>
+                </div>
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" id="account-tab" data-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+                        <i class="fa fa-home text-center mr-1"></i> 
+                        Личные данные
+                    </a>
+                    <a class="nav-link" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+                        <i class="fa fa-key text-center mr-1"></i> 
+                        Пароль
+                    </a>
+                    <a class="nav-link" id="security-tab" data-toggle="pill" href="#security" role="tab" aria-controls="security" aria-selected="false">
+                        <i class="fa fa-gear text-center mr-1"></i>
+                        Доп. Настройки
+                    </a>
+                    <a class="nav-link" id="payments-tab" data-toggle="pill" href="#payments" role="tab" aria-controls="payments" aria-selected="false">
+                        <i class="fa fa-credit-card text-center mr-1"></i>
+                        Систима платижей
+                    </a>
+                </div>
+            </div>
+            <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+                    <h3 class="mb-4">Информация о профиле</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="text">Имя</label>
+                                  <input type="text" class="form-control" value="{{current_user.username}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="text">Email</label>
+                                  <input type="text" class="form-control" value="{{current_user.email}}" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="text">Номер телефона</label>
+                                  <input type="text" class="form-control " value="{{current_user.user_phone}}" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                    <div class="conatainer justify-content-md-center">
+                    <form action="" method="post">
+                    <div class="row">
+                        {{form_password.csrf_token }}
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="password">Старый пароль</label>
+                                  {% if form_password.old_password.errors %}
+                                    {{ form_password.old_password(class='is-invalid form-control') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form_password.old_password.errors %}
+                                        <span>{{error}}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{form_password.old_password(class="form-control")}}
+                                    {% endif %}
+                                  
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="password"> Новый пароль</label>
+                                  {% if form_password.new_password.errors %}
+                                    {{ form_password.new_password(class='form-control is-invalid') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form_password.new_password.errors %}
+                                        <span>Неверный пароль</span>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    {{form_password.new_password(class="form-control")}}
+                                    {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                  <label for="password"> Подвертите новый пароль</label>
+                                {{form_password.config_password(class="form-control")}}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                        {{form_password.password_submit(class="btn btn-primary")}}
+                        </div>
+                    </div>
+                </form>
+                </div>
+                </div>
+                <!-- изменение данных аккаунта -->
+                    <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                        <legend class="legend"> {{legend}} </legend>
+                        <div class="conatainer justify-content-md-center">
+                        <div class="row row-cols-2">
+                            <div class="col-md-6">
+                            <form action="" method="post">
+                                {{form_name.csrf_token }}
+                            
+                                <div class="form-group">
+                                    <label for="text">Изменить Имя</label>
+                                    {% if form_name.new_username.errors %}
+                                    {{ form_name.new_username(class='is-invalid form-control') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form_name.new_username.errors %}
+                                        <span>{{error}}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {{form_name.name_submit(class="btn btn-primary btn-sm")}}
+                                    
+                                    {% else %}
+                                    {{form_name.new_username(class="form-control")}}<br>
+                                    {{form_name.name_submit(class="btn btn-primary btn-sm")}}
+                                    {% endif %}
+                                </div>
+                            </form>
+                            </div>
+                            <div class="col-md-6">
+                            <form action="" method="post">
+                                {{form_email.csrf_token }}
+                            
+                                <div class="form-group">
+                                    <label for="text">Изменить Email</label>
+
+                                    {% if form_email.email.errors %}
+                                    {{ form_email.email(class='is-invalid form-control') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form_email.email.errors %}
+                                        <span>{{error}}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {{form_email.email_submit(class="btn btn-primary btn-sm")}}
+                                    
+                                    {% else %}
+                                    {{form_email.email(class="form-control")}}<br>
+                                    {{form_email.email_submit(class="btn btn-primary btn-sm")}}
+                                    {% endif %}
+                                </div>
+                            </form>
+                            </div>
+
+                            <div class="col-md-6">
+                            <form action="" method="post">
+                                {{form_phone.csrf_token }}
+                            
+                                <div class="form-group">
+                                    <label for="text"> Изменить номер телефона</label>
+                                    {% if form_phone.phone.errors %}
+                                    {{ form_phone.phone(class='is-invalid form-control') }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form_phone.phone.errors %}
+                                        <span>{{error}}</span>
+                                        {% endfor %}
+                                    </div>
+                                    {{form_phone.phone_submit(class="btn btn-primary btn-sm")}}
+                                    
+                                    {% else %}
+                                    {{form_phone.phone(class="form-control")}}<br>
+                                    {{form_phone.phone_submit(class="btn btn-primary btn-sm")}}
+                                    {% endif %}
+                                </div>
+                            </form>
+                            </div>
+                            <div class="col-md-6">
+                                <form action="" method="post" enctype="multipart/form-data">
+                                    {{form_image.csrf_token }}
+                                    <div class="form-group">
+                                        <label for="file"> Изменить аватарку</label>
+                                        {% if form_image.image.errors %}
+                                        {{ form_image.image(class='is-invalid form-control') }}
+                                        <div class="invalid-feedback">
+                                            {% for error in form_image.image.errors %}
+                                            <span>{{error}}</span>
+                                            {% endfor %}
+                                        </div>
+                                        {{form_image.image_submit(class="btn btn-primary btn-sm")}}
+                                        
+                                        {% else %}
+                                        {{form_image.image(class="form-control")}}
+                                        {{form_image.image_submit(class="btn btn-primary btn-sm")}}
+                                        {% endif %}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="tab-pane fade" id="payments" role="tabpanel" aria-labelledby="payments-tab">
+                        <!-- <h3 class="mb-4">Security Settings</h3> -->
+                        <form action="" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="text">Изменить Email</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="text"> Добавить номер телефона</label>
+                                    <input type="tel" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="text"> Банковская карта</label>
+                                    <input type="text" name="card" id="card" class="form-control" placeholder="0000 0000 0000 0000">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                        <div>
+                            <button class="btn btn-primary">Обновить ифнормацию</button>
+                            <button class="btn btn-light">Сбросить</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="story" role="tabpanel" aria-labelledby="story-tab">
+                        <!-- <h3 class="mb-4">Security Settings</h3> -->
+                        <form action="" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="text">Изменить Email</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="text"> Добавить номер телефона</label>
+                                    <input type="tel" class="form-control phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="file"> Изменить аватарку</label>
+                                    <input type="file" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                        <div>
+                            <button class="btn btn-primary">Обновить ифнормацию</button>
+                            <button class="btn btn-light">Сбросить</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock body %}
