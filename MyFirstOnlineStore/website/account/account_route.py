@@ -148,6 +148,9 @@ def shopping_basket():
     place = AccauntPlaceForm(prefix='plase')
     summa = 0
     id = session['_user_id']
+    results = db.session.query(UserProduct, User, Product).join(
+        Product).join(User).filter(UserProduct.user_id == id, Product.buy == 0, Product.basket == id).all()
+    
     context = {
         'title': 'Корзина покупок',
         'data': results,
@@ -155,8 +158,7 @@ def shopping_basket():
         'basket': basket,
         'place': place
     }
-    results = db.session.query(UserProduct, User, Product).join(
-        Product).join(User).filter(UserProduct.user_id == id, Product.buy == 0, Product.basket == id).all()
+    
     
     for user_p, user, prod in results:
         summa += prod.prise
