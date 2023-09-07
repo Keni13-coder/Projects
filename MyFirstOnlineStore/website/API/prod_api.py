@@ -10,7 +10,7 @@ import json
 
 
 class ProductInfo(Resource):
-    def get(self):
+    def get(self, prod_id=None):
         """ get request
 
         Attributes
@@ -22,10 +22,17 @@ class ProductInfo(Resource):
         Returns:
             json: full information from the Product class
         """
-        all_product = Product.query.all()
-        data = json.dumps({prod.id: prod.to_dict() for prod in all_product}, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+        if prod_id:
+            all_product = Product.query.filter_by(id=prod_id).first()
+            if all_product:
+                data = json.dumps({all_product.id:all_product.to_dict()}, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+            else:
+                return json.dumps({'massages': 'product not found'}), 404
+        else:
+            all_product = Product.query.all()
+            data = json.dumps({prod.id: prod.to_dict() for prod in all_product}, indent=4, sort_keys=True, default=str, ensure_ascii=False)
 
-        return data
+        return data, 200
 
     def post(self):
         # чисто для теорииб, тк в реале товары буду добовляться лишь через админку

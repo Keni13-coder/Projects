@@ -7,13 +7,14 @@ from .. import db
 from flask_restful import Resource, reqparse
 from bcrypt import hashpw, gensalt
 import json
+from flask import session
 
 
 
 
 class UserInfo(Resource):
 
-    def get(self):
+    def get(self, user_id):
         """ get request
 
         Attributes
@@ -25,11 +26,22 @@ class UserInfo(Resource):
         Returns:
             json: full information from the User class
         """
-        all_user = User.query.all()
-        all_user = {user.id: {'username': user.username, 'email': user.email, 'password': user.password,
-                              'image_file': user.image_file, 'time': user.time, 'user_phone': user.user_phone} for user in all_user}
 
-        return json.dumps(all_user, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+        all_user = User.query.filter_by(id=user_id).first()
+        if all_user:
+            if all_user.id == int(session.get('_user_id')):
+                all_user = {all_user.id: all_user.to_user()}
+                return json.dumps(all_user, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+            
+            else:
+                return json.dumps({'massages': 'no access'}), 403
+        
+        else:   
+            return json.dumps({'massages': 'this user does not exist'}), 404
+        
+
+        
+
 
     def post(self):
         """ post request

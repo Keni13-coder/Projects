@@ -6,7 +6,7 @@
 """
 from .. import db
 from flask import Blueprint
-from flask import render_template, request, flash, url_for, redirect
+from flask import render_template, request, flash, url_for, redirect, make_response
 from website.auth.auth_form import LoginForm, SingUpForm
 from website.models import hashpw, checkpw, gensalt
 from flask_login import login_user, logout_user
@@ -51,37 +51,36 @@ def login():
     
     if request.method == 'POST':
         # Регистрация
+        
         if singUp_form.validate_on_submit():
-            if singUp_form.sing_validate_username(singUp_form.sing_username) and singUp_form.sing_validate_email(singUp_form.sing_email):
-                new_user = User(username=singUp_form.sing_username.data, email=singUp_form.sing_email.data, password=hashpw(
-                    singUp_form.sing_password.data.encode(), gensalt()))
+            password = hashpw(singUp_form.sing_password.data.encode(), gensalt())
+            new_user = User(username=singUp_form.sing_username.data, email=singUp_form.sing_email.data, password=password)
 
-                # добовляем в базу данных
-                db.session.add(new_user)
+            db.session.add(new_user)
 
-                # сохроняем
-                db.session.commit()
-                login_user(new_user, remember=True)
-                # переходим на главную, переход делаеться через функции url_for('views.index')- указываем модуль и функцию
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('views.index'))
-
-            else:
-                flash('Такой пользователь уже зарегистрирован',
-                      category='successes')
+            db.session.commit()
+            login_user(new_user, remember=True)
+            username = singUp_form.sing_username.data
+            response = make_response(redirect(url_for('views.index')))
+            response.set_cookie('username', username)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else response
 
         # Вход
-
         if login_form.validate_on_submit():
+            user = db.session.query(User).filter_by(username=login_form.username.data).first()
 
-            user = login_form.validate_username(username=login_form.username)
-            # делаем проверку на вхождение майла и пароля пользователя
-            if user and checkpw(login_form.password.data.encode(), user.password):
-                # авторизуем его
-                login_user(user, remember=login_form.remember)
-                # next получаем из аргументов
-                next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for('views.index'))
+            if user:
+                if checkpw(login_form.password.data.encode(), user.password):
+
+                    login_user(user, remember=login_form.remember)
+                    username = login_form.username.data
+                    response = make_response(redirect(url_for('views.index')))
+                    response.set_cookie('username', username)
+                    next_page = request.args.get('next')
+                    return redirect(next_page) if next_page else response
+                else:
+                    flash('Войти не удалось. Пожалуйста проверте Имя или пароль', 'danger')
             else:
                 flash('Войти не удалось. Пожалуйста проверте Имя или пароль', 'danger')
                 

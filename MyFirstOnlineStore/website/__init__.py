@@ -74,10 +74,10 @@ def create_app():
 
     # API
     from website.API import prod_api, user_api, user_prod_api, buy_user_prod_api
-    api.add_resource(prod_api.ProductInfo, '/api/product', '/api/product/<int:prod_id>')
-    api.add_resource(user_api.UserInfo, '/api/user', '/api/user/<int:user_id>')
-    api.add_resource(user_prod_api.UserProductInfo, '/api/user_prod', '/api/user_prod/<int:user_prod_id>')
-    api.add_resource(buy_user_prod_api.BuyProductUserInfo, '/api/buy_prod', '/api/buy_prod/<int:buy_prod_id>')
+    api.add_resource(prod_api.ProductInfo, '/api/product/', '/api/product/<int:prod_id>/')
+    api.add_resource(user_api.UserInfo, '/api/user/<int:user_id>/')
+    api.add_resource(user_prod_api.UserProductInfo, '/api/user_prod/<int:user_prod_id>/')
+    api.add_resource(buy_user_prod_api.BuyProductUserInfo, '/api/buy_prod/<int:buy_prod_id>/')
     api.init_app(app)
     
     

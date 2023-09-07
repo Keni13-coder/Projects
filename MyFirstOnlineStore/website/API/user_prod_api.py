@@ -6,11 +6,12 @@ from website.models import UserProduct
 from .. import db
 from flask_restful import Resource, reqparse
 import json
+from flask import session
 
 
 class UserProductInfo(Resource):
 
-    def get(self):
+    def get(self, user_prod_id):
         """ get request
 
         Attributes
@@ -22,11 +23,18 @@ class UserProductInfo(Resource):
         Returns:
             json: full information from the UserProduct class
         """
-        user_prod = UserProduct.query.all()
-        user_prod = {us_pd.id: {'user_id': us_pd.user_id,
-                                'product_id': us_pd.product_id, 'like': us_pd.like} for us_pd in user_prod}
+        
+        user_prod = UserProduct.query.filter_by(id=user_prod_id).first()
+        if user_prod:
+            if user_prod.user_id == int(session.get('_user_id')):
+                user_prod = {user_prod.id: user_prod.to_user_prod()}
+                return json.dumps(user_prod, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+            else:
+                return json.dumps({'massages': 'no access'}), 403
+        else:
+            return json.dumps({'massages': 'this user_prod does not exist'}), 404
 
-        return json.dumps(user_prod, indent=4, sort_keys=True, default=str, ensure_ascii=False)
+        
 
     def post(self):
         """ post request

@@ -151,17 +151,16 @@ def shopping_basket():
     results = db.session.query(UserProduct, User, Product).join(
         Product).join(User).filter(UserProduct.user_id == id, Product.buy == 0, Product.basket == id).all()
     
-    context = {
-        'title': 'Корзина покупок',
-        'data': results,
-        'sum': summa, 
-        'basket': basket,
-        'place': place
-    }
-    
-    
     for user_p, user, prod in results:
         summa += prod.prise
+
+    context = {
+            'title': 'Корзина покупок',
+            'data': results,
+            'sum': summa, 
+            'basket': basket,
+            'place': place
+        }
 
     if request.method == 'POST':
 

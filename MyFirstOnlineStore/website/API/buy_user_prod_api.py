@@ -1,14 +1,15 @@
 from website.models import BuyProductUser, Product
 from .. import db
+from flask import jsonify
 from flask_restful import Resource, reqparse
 import json
+from flask import session
 
 
 class BuyProductUserInfo(Resource):
 
-    def get(self):
+    def get(self, buy_prod_id):
         """ get request
-
         Attributes
         ----------
         prod_info: list
@@ -17,16 +18,29 @@ class BuyProductUserInfo(Resource):
             BuyProductUser.query.all()
         full_info: dict
             contains information about the user's purchases
-        
+
         Returns:
             json: full information from the Product class
         """
-        prod_info = Product.query.all()
-        buy_info = BuyProductUser.query.all()
-        full_info = json.dumps({buy.id: {'user_id': buy.user_id, 'summa': buy.summa, 'time': buy.time, 'buy_prod': {prod.id: prod.to_dict(
-        ) for prod in prod_info if buy.order_number == prod.buy_order}} for buy in buy_info}, indent=4, default=str, ensure_ascii=False)
+       
+       
+        buy_info = BuyProductUser.query.filter(BuyProductUser.id == buy_prod_id).first()
+        if buy_info:
+            if buy_info.user_id == int(session.get('_user_id')):
+                prod_info = Product.query.filter(Product.buy_order == buy_info.order_number).all()
+                full_info = json.dumps({buy_info.id: {'user_id': buy_info.user_id, 'summa': buy_info.summa, 'time': buy_info.time, 'buy_prod': {prod.id: prod.to_dict(
+                        ) for prod in prod_info}}}, indent=4, default=str, ensure_ascii=False)
+            
+                return full_info, 200
+            
+            else:
+                return json.dumps({'massages': 'no access'}), 403
+        else:
+            return json.dumps({'massages': 'Buy not found'}), 404
+
         
-        return full_info, 200
+    
+        
 
     def post(self):
         """ post request
@@ -40,7 +54,7 @@ class BuyProductUserInfo(Resource):
                 summa (int): required,
                 buy_prod (dict): required
                 }
-        
+
         Attributes
         ----------
         parser: RequestParser
@@ -92,7 +106,7 @@ class BuyProductUserInfo(Resource):
         ----------
         del_order: BuyProductUser
             this attribute will be searched in BuyProductUser by id
-        
+
         Returns:
             function: returns the get function of the BuyProductUserInfo class
             json: error message, code 404

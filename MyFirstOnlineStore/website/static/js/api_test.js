@@ -6,7 +6,7 @@
 // http.onload = () => console.log(http.responseText)
 'GET -version'
 
-function sendRequest(method = 'GET', url = '/api/buy_prod') {
+function sendRequest(method = 'GET', url = '/api/user/1') {
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
 

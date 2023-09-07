@@ -168,3 +168,12 @@ def create():
 
             return redirect(url_for('.index'))
     return render_template('create.html', **context)
+
+
+@views.app_errorhandler(404)
+def page_nor_found(error):
+    context = {
+        'title':'Страница не найдена',
+        'url': request.base_url
+    }
+    return render_template('404.html', **context), 404

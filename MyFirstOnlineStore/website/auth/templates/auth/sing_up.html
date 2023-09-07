@@ -17,6 +17,19 @@
     <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
       <img class="" src="{{url_for('static', filename='image/icon/home.png')}}" aria-label="Bootstrap">
     </a>
+    <div class="">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul class=flashes>
+        {% for category, message in messages %}
+           <div class="alert alert-{{category}}">
+            {{ message }}
+           </div>
+        {% endfor %}
+        </ul>
+      {% endif %}
+      {% endwith %}
+    </div>
   </div>
 
 
@@ -26,32 +39,24 @@
     <!-- регистрация -->
     <form method="POST" action="">
       {{ singUp_form.csrf_token }}
-
       <legend class="legend"> {{singup_legend}} </legend>
+      {% for field in singUp_form if field.name not in ['csrf_token', 'sing_submit'] %}
       <div class="input-group">
-
-        {{singUp_form.sing_username(class='form-post-title')}}
-        <label for="Username">Username</label>
-      </div>
-
-      <div class="input-group">
-
-        {{singUp_form.sing_email(class='form-post-title', )}}
-        <label for="email">Email</label>
-      </div>
-
-      <div class="input-group">
-        {{singUp_form.sing_password(class='form-post-title',)}}
-        <label for="password">Password</label>
-      </div>
-
-      <div class="input-group">
-        {{singUp_form.sing_config_password(class='form-post-title' )}}
-        <label for="">Config Password</label>
-      </div>
-      <div class="form-group">
-      {{singUp_form.sing_submit(class='btn')}}
-      </div>
+        {% if field.errors %}
+        {{ field(class='is-invalid')}}
+        <div class="invalid-feedback">
+            {% for error in field.errors if error != 'This field is required.' %}
+            <span>{{error}}</span>
+            {% endfor %}
+        </div>
+        {% else %}
+        {{field}}
+        {% endif %}
+    </div>
+    {% endfor %}
+    <div class="form-group">
+    {{singUp_form.sing_submit}}
+    </div>
       <div class="sing-link">
         <p>Already have an account? <a class="singIn-link">Sing In</a></p>
       </div>
@@ -65,12 +70,12 @@
 
       <legend class="legend"> {{login_legend}} </legend>
       <div class="input-group">
-        {{login_form.username(class='form-post-title')}}
+        {{login_form.username}}
         <label for="Username">Username</label>
       </div>
 
       <div class="input-group">
-        {{login_form.password(class='form-post-title')}}
+        {{login_form.password}}
         <label for="password">Password</label>
       </div>
 
@@ -79,7 +84,7 @@
         {{login_form.remember.label(class='form-check-label')}}
       </div>
       <div class="form-group">
-        {{login_form.submit(class='btn')}}
+        {{login_form.submit}}
       </div>
       <div class="sing-link">
         <p>Don't have an account? <a class="singUp-link">Sing Up</a></p>

@@ -3,7 +3,7 @@
 from ..main.product_image_form import ImageField,ImageAllowed
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import ValidationError, DataRequired, Length, Email,InputRequired,EqualTo
+from wtforms.validators import ValidationError, DataRequired, Length, Email, InputRequired, EqualTo
 from ..models import User, checkpw 
 from flask import flash
 from flask_login import current_user

@@ -32,6 +32,12 @@ class User(db.Model, UserMixin):
 
     user_phone = db.Column(PhoneNumberType(), nullable=False, default='')
 
+    def to_user(self):
+        return {
+                column.name: getattr(self, column.name, None)
+                for column in User.__table__.columns if column.name != 'id'
+            }
+    
     def set_password(self, password, hashed_password):
         """ Method for changing the password
 
@@ -114,6 +120,12 @@ class UserProduct(db.Model):
     product_id = db.Column(db.Integer, db.ForeignKey('Product.id'))
     like = db.Column(db.Boolean, nullable=False, default=False)
 
+
+    def to_user_prod(self):
+        return {
+                column.name: getattr(self, column.name, None)
+                for column in UserProduct.__table__.columns if column.name != 'id'
+            }
 
 class BuyProductUser(db.Model):
     """A class for representing user purchases
