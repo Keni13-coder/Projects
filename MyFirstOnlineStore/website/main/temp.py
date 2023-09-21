@@ -18,7 +18,7 @@ from ..utils import save_img as s
 
 views = Blueprint('views', __name__)
 
-
+@views.route('/index/', methods=['GET', 'POST'])
 @views.route('/', methods=['GET', 'POST'])
 def index():
     """ The main flow of information located on the index home page

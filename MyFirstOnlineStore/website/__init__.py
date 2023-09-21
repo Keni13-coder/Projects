@@ -24,7 +24,6 @@
 from flask import Flask 
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from bcrypt import hashpw, gensalt
 from flask_restful import Api
 
 
@@ -121,20 +120,7 @@ def create_data(app: Flask):
      # открываем контекст, без него нельзя
     with app.app_context():
         # создаём базу данных с нашими таблицами, усли такая уже есть пересоздовать не будет
-        db.drop_all()
         db.create_all()
-        hashed_password =  hashpw('1313'.encode(), gensalt())
-        user = User(username='Admin13', email='admin@blog.com', password=hashed_password)
-        usertest = User(username='Usertest', email='user@blog.com', password=hashed_password)
-        product = Product(title='Гучи кроссы', prise=500, category='Элит', filter_category='Элит', img_file='image/product/sneakers_pro.jpg')
-        product_1 = Product(title='Турбо кроссы', prise=300, category='Дорогие кросы', filter_category='Дорогиекросы', img_file='image/product/sneakers.jpg')
-        product_2 = Product(title='Мега кроссы', prise=200, category='Дорогие кросы', filter_category='Дорогиекросы')
-        product_3 = Product(title='Мега кроссы', prise=200, category='Дорогие кросы', filter_category='Дорогиекросы')
-        product_4 = Product(title='Мега кроссы', prise=200, category='Дорогие кросы', filter_category='Дорогиекросы')
-        product_5 = Product(title='Мега кроссы', prise=200, category='Дорогие кросы', filter_category='Дорогиекросы')
-        product_6 = Product(title='Мега кроссы', prise=200, category='Дорогие кросы', filter_category='Дорогиекросы')
-        buy = UserProduct(user_id=1, product_id=1, like=True)
-        db.session.add_all([user, product, product_1, product_2, product_3, product_4, product_5, product_6, usertest, buy])
-        db.session.commit()
+
         
         
