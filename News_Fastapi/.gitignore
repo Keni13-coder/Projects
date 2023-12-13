@@ -1,0 +1,9 @@
+Готовый проект для Python 3.10
+venv
+__pycache__
+next_action.py
+site.db
+.vscode
+.pytest_cache
+*.log
+*.env*
