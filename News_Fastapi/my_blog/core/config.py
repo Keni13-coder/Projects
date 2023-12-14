@@ -18,9 +18,9 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
     
-    POSTGRES_DB: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str|None
+    POSTGRES_USER: str|None
+    POSTGRES_PASSWORD: str|None
     
     MY_MAIL_USERNAME:str
     MY_MAIL_PASSWORD: str

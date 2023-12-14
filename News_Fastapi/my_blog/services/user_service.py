@@ -53,15 +53,6 @@ class HashePasswordWorker:
         new_password = await self._cerate_hashed_password(new_password)
         return new_password
 
-'                                                 работа с токеном'
-
-'''
-проверка действительности токена
-получение токена действещего юзера
-удаление токена
-переопределение токена юзера (после истечение после логирования будет создан новый токен)
-
-'''
 
 
 class TokenWorker:

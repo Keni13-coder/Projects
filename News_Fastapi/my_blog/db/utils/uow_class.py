@@ -17,7 +17,7 @@ class IUnitOfWork(ABC):
     @abstractmethod
     async def __aenter__(self):
         ...
-    # сам по себе включает в себе конфигурацию обработки ошибок, если указать
+
     @abstractmethod
     async def __aexit__(self, *args):
         ...

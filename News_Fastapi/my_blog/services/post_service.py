@@ -20,7 +20,7 @@ from background_celery.image_to_json import image_serialization
 from celery.result import AsyncResult
 
 
-'работа с изображением без celery'
+
 class PhotoWorker:
     
     async def __create_user_media_dir(self, full_path_to_media: str, file_name: str):
@@ -66,7 +66,6 @@ class PhotoWorker:
         return None
         
         
-'работа с коментариями'
 
 class CommentService:
 
@@ -124,8 +123,6 @@ class CommentService:
         
 
 
-'работа с просмотрами'
-
 class VieWorker:
     async def __view_add(self, view_data: CreateViewSchema, uow: IUnitOfWork) -> None:
         data = view_data.model_dump()
@@ -163,8 +160,6 @@ class VieWorker:
     
     
 
-
-'работа с постами'
 
 class PostService(VieWorker, PhotoWorker):
     async def create_post(self, post_data: CreatePost, username: str, uow: IUnitOfWork) -> OutputPostSchemas:

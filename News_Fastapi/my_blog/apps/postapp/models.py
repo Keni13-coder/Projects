@@ -20,7 +20,7 @@ class Post(Base):
     image: Mapped[str]
     content: Mapped[str]
     owner_uid: Mapped[owruid]
-    owner = relationship('User', back_populates='post') # lazy='selectin' отвечает за связи чере join
+    owner = relationship('User', back_populates='post')
     comment = relationship('Comment', back_populates='post')
     view = relationship('View', back_populates='post')
     

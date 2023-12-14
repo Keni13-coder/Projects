@@ -9,12 +9,12 @@ from core.config import TemplateResponse
 from apps.dependencies import post_service, current_user, UOWDep, user_service, comment_service, recent, popular
 from apps.postapp.schemas import CreatePost, CreateCommentSchema,  OutputUserSchema, UpgradePostSchema
 from apps.postapp.utils import json_parse
-from db.utils.cache_builder import cache_key_builder
+
 
 post_router = APIRouter(prefix='/blog')
 
 
-# @cache(expire=60, key_builder=cache_key_builder)
+
 @post_router.get('/')
 async def all_post(request: Request, uow: UOWDep, recent: recent, popular: popular):
     request.name = 'blog'
@@ -26,9 +26,6 @@ async def all_post(request: Request, uow: UOWDep, recent: recent, popular: popul
     return TemplateResponse('blog/blog.jinja2', context=context)
 
 
-
-
-# # возможно нужно убрать request тк будет в зависимости текущего юзера
 @post_router.get('/add_post/')
 @post_router.post('/add_post/')
 async def create_post(request: Request, current_user: current_user, uow: UOWDep, recent: recent, popular: popular):
@@ -66,7 +63,6 @@ async def show_post(uuid: str, request: Request, uow: UOWDep, recent: recent, po
     response = TemplateResponse('blog/single-post.jinja2', context=context)
     response.set_cookie('post_uid', uuid)
     return response
-
 
 
 @post_router.get('/edit/{uuid}')
@@ -109,16 +105,11 @@ async def edit_post(uuid: str, request: Request, uow: UOWDep, current_user: curr
     return TemplateResponse('blog/edit-post.jinja2', context=context)
 
 
-
 @post_router.get('/remove/{uuid}')
 async def remove_post(uuid: str, request: Request, uow: UOWDep, current_user: current_user):
     await post_service.delete_post(uuid, uow)
     return RedirectResponse('/blog/', status_code=303)
     
-
-
-
-
 
 @post_router.post('/add_comment')
 async def add_comment(request: Request, uow: UOWDep, current_user: current_user):
@@ -136,5 +127,5 @@ async def add_comment(request: Request, uow: UOWDep, current_user: current_user)
 
     comment = await comment_service.add_comment(comment, uow)
     
-    # return JSONResponse({'message': 'success', 'detail':{'username': user.username, 'text': text}})
+    
     return {'username': user.username, 'text': text}

@@ -20,10 +20,7 @@ class AbsrtactRepository(ABC):
     async def deactivate_one():
         raise NotImplementedError
     
-'''
-Добавить limit and offset
-Добавить вывод задом на перед (замые свежие записи)
-'''
+
 class SQLAlchemyRepository(AbsrtactRepository):
     model = None
     

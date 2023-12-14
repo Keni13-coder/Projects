@@ -2,8 +2,6 @@ from typing import Optional, List
 from fastapi import HTTPException
 from pydantic import BaseModel, EmailStr, UUID4, Field, validator
 from datetime import datetime
-# from apps.authapp.models import User
-
 
 
 class UserLoginSchema(BaseModel):
@@ -27,9 +25,7 @@ class UserBase(BaseModel):
     uid: UUID4
     create_date: datetime
     
-    # class Meta:
-    #     orm_model = User
-    
+
     
     
 class OutputToken(BaseModel):
@@ -39,7 +35,6 @@ class OutputToken(BaseModel):
     user_uid: UUID4
 
     class Config:
-        # позволяет пользоваться псовдонимом указанным в alias (точнее тоб программа считала что имя = псевдоним)
         populate_by_name = True
         from_attributes=True
         
@@ -86,5 +81,4 @@ class ChangeUserPassword(BaseModel):
         return v
     
     class Config:
-        # позволяет пользоваться псовдонимом указанным в alias (точнее тоб программа считала что имя = псевдоним)
         from_attributes=True

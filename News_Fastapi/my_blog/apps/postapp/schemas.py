@@ -1,16 +1,12 @@
 from datetime import datetime, date
-from typing import List, Optional, Annotated, Union
+from typing import List, Optional, Union
 
-from pydantic import UUID4, BaseModel, Field, validator, model_validator
+from pydantic import UUID4, BaseModel, validator, model_validator
 from fastapi import HTTPException, UploadFile, File
-
 
 from core.img_extension import img_extension
 from apps.authapp.schemas import OutputUserSchema
 
-        # arbitrary_types_allowed = True
-        # возможно еще потребуеться для связей
-        # orm_model = Post
         
 class PostBase(BaseModel):
     image: UploadFile = File(...)
@@ -28,15 +24,12 @@ class PostBase(BaseModel):
             raise HTTPException(detail=er, status_code=400)
 
         return value
+
         
-
-
 class CreatePost(PostBase):
     title: str
     content: str
     owner_uid: UUID4
-    
-
     
     
 class UpgradePostSchema(PostBase):
@@ -53,8 +46,6 @@ class UpgradePostSchema(PostBase):
             er = [{'type': 'value_error', 'loc': (), 'msg': "Value error, 'At least 1 field must be filled in' is not a valid HTTPStatus", 'input': {}}]
             raise HTTPException(detail=er, status_code=400)
         return valid_dict
-
-
 
 
 class CommentBase(BaseModel):
@@ -82,6 +73,7 @@ class OutputCommentSchema(CommentBase):
     owner_uid: Optional[UUID4]
     owner: Optional[OutputUserSchema] = None
 
+
 class ViewBase(BaseModel):
     class Config:
         from_attributes=True
@@ -96,7 +88,6 @@ class OutputViewSchema(ViewBase):
     uid: Optional[UUID4]
     post_uid: Optional[UUID4] 
     owner_uid: Optional[UUID4]
-
 
 
 class OutputPostSchemas(BaseModel):
