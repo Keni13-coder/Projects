@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from fastapi_mail import ConnectionConfig
@@ -18,9 +19,9 @@ class Settings(BaseSettings):
     DB_PASS: str
     DB_NAME: str
     
-    POSTGRES_DB: str|None
-    POSTGRES_USER: str|None
-    POSTGRES_PASSWORD: str|None
+    POSTGRES_DB: Union[str, None] = None
+    POSTGRES_USER: Union[str, None] = None
+    POSTGRES_PASSWORD: Union[str, None] = None
     
     MY_MAIL_USERNAME:str
     MY_MAIL_PASSWORD: str
