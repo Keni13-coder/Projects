@@ -21,7 +21,7 @@
 
 Перейдите в News_Fastapi. 
 
-`cd ../Projects/News_Fastapi`
+`cd ./Projects/News_Fastapi`
 
 Создайте виртуального среду. 
 
@@ -102,7 +102,7 @@
 
 Перейдите в корнивую рабочию директорию проекта 
 
-`cd ../Projects/News_Fastapi/my_blog` 
+`cd ./Projects/News_Fastapi/my_blog` 
 
 Создайте файл .env-non-dev в подкаталоге __core__. Определите следующие переменные: 
 
