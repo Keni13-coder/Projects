@@ -86,7 +86,7 @@
 
 1. `alembic upgrade head` - создаёт таблицы обновляя их до последней версии миграций 
 
-2. `celery -A background_celery.app_celery:celery worker --loglevel=INFO --logfile=./logs/celery.log` - запуск celery в режиме worker с логированием 
+2. `celery -A background_celery.app_celery:celery worker --loglevel=INFO --logfile=./logs/celery.log --pool=solo` - запуск celery в режиме worker с логированием 
 
 3. `celery -A background_celery.app_celery:celery flower` - запуск flower порт по умолчанию "5555" 
 
