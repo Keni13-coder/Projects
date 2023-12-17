@@ -62,9 +62,9 @@
 
  Должны быть заранее запущен 
 
-* RABBITMQ_DEFAULT_USER= ваше имя 
+* RABBITMQ_DEFAULT_USER= ваше имя (default guest)
 
-* RABBITMQ_DEFAULT_PASS= ваш пароль 
+* RABBITMQ_DEFAULT_PASS= ваш пароль (default guest)
 
 * RABBITMQ_NODE_PORT=5672 
 
