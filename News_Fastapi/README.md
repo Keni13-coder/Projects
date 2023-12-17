@@ -4,6 +4,7 @@
 
 * FastAPI
 * Postgresql
+* Alembic
 * Redis
 * Celery
 * RabbitMQ
